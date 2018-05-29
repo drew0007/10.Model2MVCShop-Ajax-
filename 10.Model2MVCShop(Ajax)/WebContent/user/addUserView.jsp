@@ -30,6 +30,7 @@
 			var pw=$("input[name='password']").val();
 			var pw_confirm=$("input[name='password2']").val();
 			var name=$("input[name='userName']").val();
+			var email=$("input[name='email']").val();
 			
 			
 			if(id == null || id.length <1){
@@ -51,7 +52,12 @@
 			if(name == null || name.length <1){
 				alert("이름은  반드시 입력하셔야 합니다.");
 				return;
-			}
+			}				 
+			if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1 
+		 			|| email.indexOf('.') == (email.length-1)) ){
+		    	alert("이메일 형식이 아닙니다.");
+				return;
+		     }
 			
 			//if(document.detailForm.password.value != document.detailForm.password2.value) {
 			if( pw != pw_confirm ) {				
@@ -120,18 +126,22 @@
 		    return true;
 		}========================================	*/
 		//==> 추가된부분 : "이메일" 유효성Check  Event 처리 및 연결
-		 $(function() {
+		 /* $(function() {
 			 
 			 $("input[name='email']").on("change" , function() {
 				
 				 var email=$("input[name='email']").val();
 			    
-				 if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1) ){
+				 console.log("1 : "+email.indexOf('.'));
+				 console.log("2 : "+email.indexOf('@'));
+				 console.log("3 : "+email.length);
+				 if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1 
+						 			|| email.indexOf('.') == (email.length-1)) ){
 			    	alert("이메일 형식이 아닙니다.");
 			     }
 			});
 			 
-		});	
+		});	 */
 		
 	   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	   //==> 주민번호 유효성 check 는 이해정도로....

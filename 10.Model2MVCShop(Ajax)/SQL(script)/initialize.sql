@@ -26,8 +26,10 @@ CREATE TABLE users (
 	postcode  	VARCHAR2(10),
 	address  	VARCHAR2(100),
 	address2  	VARCHAR2(100),
-	user_id_kakao 	VARCHAR2(20),
-	user_id_naver 	VARCHAR2(20),
+	user_id_kakao 		VARCHAR2(20),
+	user_id_naver 		VARCHAR2(20),
+	user_status_code 	VARCHAR2(3),
+	email_code 	VARCHAR2(20),
 	PRIMARY KEY(user_id)
 );
 

@@ -177,7 +177,7 @@
 		function loginWithNaver(){
 			$.ajax( 
 					{
-						url : "/user/json/test" ,
+						url : "/user/json/loginWithNaver" ,
 						method : "GET" ,
 						dataType : "json" ,
 						headers : {

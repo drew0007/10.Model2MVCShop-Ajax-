@@ -42,7 +42,6 @@
 
 		$(function(){
 			$("td.ct_btn01:contains('네이버 계정 연동')").on("click" , function() {
-		    	alert("네이버 계정 연동 기능 구현 중");
 				loginWithNaver();
 			});
 		});
@@ -111,6 +110,56 @@
 							alert("연동성공");
 							console.log(JSONData);
 							$("td.ct_btn01:contains('카카오 계정 연동')").attr("hidden","hidden");
+						}
+				});
+	    }
+	    
+	    $(function(){
+	    	$("#sendMail").on("click", function(){
+	    		var userId = "${user.userId}";
+	    		var email = "${user.email}";
+	    		var emailCode = "${user.emailCode}";
+	    		
+	    		$.ajax( 
+						{
+							url : "/user/json/checkUserStatus/"+userId ,
+							method : "GET" ,
+							dataType : "json" ,
+							headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+							},
+							success : function(JSONData , status) {
+								var status = JSONData;
+								console.log(status);
+								if(status == "3"){
+									sendMail(userId, email, emailCode);
+								}else{
+									alert("이미 인증이 완료되었습니다.");
+									self.location = "/user/getUser?userId=${user.userId}";
+								}
+							}
+					});
+	    	});
+	    });
+	    
+	    function sendMail(userId, email, emailCode){
+	    	$.ajax( 
+					{
+						url : "/user/json/sendMail/"+userId+"/"+email+"/"+emailCode ,
+						method : "GET" ,
+						dataType : "json" ,
+						headers : {
+							"Accept" : "application/json",
+							"Content-Type" : "application/json"
+						},
+						success : function(JSONData , status) {
+							var check = JSONData;
+							if(check){
+					    		alert("메일 전송 완료");
+							}else{
+					    		alert("메일 전송 실패");
+							}
 						}
 				});
 	    }
@@ -189,9 +238,15 @@
 	</tr>
 	
 	<tr>
-		<td width="104" class="ct_write">이메일 </td>
+		<td width="104" class="ct_write">
+			이메일 
+			<span style="color:red">${user.userStatusCode.equals('3')?'(미인증)':'' }</span>
+		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${user.email}</td>
+		<td class="ct_write01">
+			${user.email} 
+			<input type="${user.userStatusCode.equals('3')?'button':'hidden' }" id="sendMail" value="인증메일 재발송">
+		</td>
 	</tr>
 
 	<tr>

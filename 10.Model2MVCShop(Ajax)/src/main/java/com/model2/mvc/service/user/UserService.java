@@ -27,4 +27,6 @@ public interface UserService {
 	public User checkUser(String userId2, String type) throws Exception;
 	
 	public void updateUserId(String userId, String userId2, String type) throws Exception;
+	
+	public void updateStatusCode(User user) throws Exception;
 }

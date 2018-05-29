@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -74,10 +75,31 @@ public class UserController {
 		//Business Logic
 		System.out.println("type : "+type);
 		
+		Random random = new Random();
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		int size = 20;
+		
+		do {
+			num = random.nextInt(75)+48;
+			
+			//숫자 , 대문자 , 소문자
+			if((num>=48 && num<=57) || (num>=65 && num<=90) || (num>=97 && num<=122)) {
+				sb.append((char)num);
+			}else {
+				continue;
+			}
+		}while(sb.length() < size);
+		
 		if(type.equals("ka")) {
 			user.setUserIdKakao(user.getUserId());
+			user.setUserStatusCode("1");
 		}else if(type.equals("na")) {
 			user.setUserIdNaver(user.getUserId());
+			user.setUserStatusCode("1");
+		}else {
+			user.setUserStatusCode("3");
+			user.setEmailCode(sb.toString());
 		}
 		
 		userService.addUser(user);
@@ -167,7 +189,7 @@ public class UserController {
 		return "redirect:/index.jsp";
 	}
 	
-	
+	/*
 	//@RequestMapping("/checkDuplication.do")
 	@RequestMapping( value="checkDuplication", method=RequestMethod.POST )
 	public String checkDuplication( @RequestParam("userId") String userId , Model model ) throws Exception{
@@ -180,7 +202,7 @@ public class UserController {
 		model.addAttribute("userId", userId);
 
 		return "forward:/user/checkDuplication.jsp";
-	}
+	}*/
 	
 	//@RequestMapping("/listUser.do")
 	@RequestMapping( value="listUser" )
@@ -221,6 +243,7 @@ public class UserController {
 		return "/user/addUserView.jsp";
 	}
 	
+	//카카오, 네이버 로그인시 가입 안되어있으면 회원가입으로 이동
 	@RequestMapping( value="addUser2", method=RequestMethod.GET )
 	public String addUser2( @RequestParam("userId2") String userId2 , 
 							@RequestParam("type") String type,
@@ -238,13 +261,14 @@ public class UserController {
 		return "forward:/user/addUserView.jsp";
 	}
 
-	@RequestMapping( value="test2", method=RequestMethod.GET)
-	public String test2(HttpServletRequest request, Model model) throws Exception{ 
+	//네이버 로그인 정보 가져오기
+	@RequestMapping( value="loginWithNaver", method=RequestMethod.GET)
+	public String loginWithNaver(HttpServletRequest request, Model model) throws Exception{ 
 	    String clientId = "Tj5gWPI0ucoEYjJpkdWc";//애플리케이션 클라이언트 아이디값";
 	    String clientSecret = "jdQ9HN0JTn";//애플리케이션 클라이언트 시크릿값";
 	    String code = request.getParameter("code");
 	    String state = request.getParameter("state");
-	    String redirectURI = URLEncoder.encode("http://localhost:8080/user/test2", "UTF-8");
+	    String redirectURI = URLEncoder.encode("http://localhost:8080/user/loginWithNaver", "UTF-8");
 	    String apiURL;
 	    apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&;";
 	    apiURL += "client_id=" + clientId;
@@ -317,6 +341,25 @@ public class UserController {
         
 		model.addAttribute("map", map);
 	    
-		return "/test.jsp";
+		return "/loginWithNaver.jsp";
 	}
+	
+	@RequestMapping( value="checkUserMail", method=RequestMethod.GET )
+	public String checkMail(@RequestParam("user") String userId,
+							@RequestParam("code") String emailCode) throws Exception{
+		System.out.println(userId + "/" + emailCode);
+		User user = new User();
+		user = userService.getUser(userId);
+		
+		if(user != null && user.getEmailCode() != null) {
+			if(user.getEmailCode().equals(emailCode) && user.getUserStatusCode().equals("3")) {
+				user.setUserStatusCode("1");
+				userService.updateStatusCode(user);
+			}
+		}
+		
+		return "redirect:/index.jsp";
+	}
+	
+	
 }

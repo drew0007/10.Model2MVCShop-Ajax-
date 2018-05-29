@@ -67,4 +67,8 @@ public class UserDaoImpl implements UserDao{
 			map.put("type", type);
 			sqlSession.update("UserMapper.updateUserId", map);
 	}
+	
+	public void updateStatusCode(User user) throws Exception{
+		sqlSession.update("UserMapper.updateStatusCode", user);
+	}
 }

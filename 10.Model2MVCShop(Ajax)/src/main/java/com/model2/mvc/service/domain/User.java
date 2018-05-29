@@ -20,6 +20,8 @@ public class User {
 	private String address2;
 	private String userIdKakao;
 	private String userIdNaver;
+	private String userStatusCode;
+	private String emailCode;
 	/////////////// EL 적용 위해 추가된 Field ///////////
 	private String phone1;
 	private String phone2;
@@ -147,10 +149,28 @@ public class User {
 		this.userIdNaver = userIdNaver;
 	}
 
+	public String getUserStatusCode() {
+		return userStatusCode;
+	}
+
+	public void setUserStatusCode(String userStatusCode) {
+		this.userStatusCode = userStatusCode;
+	}
+
+	public String getEmailCode() {
+		return emailCode;
+	}
+
+	public void setEmailCode(String emailCode) {
+		this.emailCode = emailCode;
+	}
+
 	@Override
 	public String toString() {
-		return "UserVO : [userId] "+userId+" [userName] "+userName+" [password] "+password+" [role] "+ role
-			+" [ssn] "+ssn+" [phone] "+phone+" [phone1] "+phone1+" [phone2] "+phone2+" [phone3] "+phone3
-			+" [email] "+email+" [regDate] "+regDate+" [postcode] "+postcode+" [address] "+address+" [address2] "+address2;
+		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", role=" + role
+				+ ", ssn=" + ssn + ", phone=" + phone + ", email=" + email + ", regDate=" + regDate + ", postcode="
+				+ postcode + ", address=" + address + ", address2=" + address2 + ", userIdKakao=" + userIdKakao
+				+ ", userIdNaver=" + userIdNaver + ", userStatusCode=" + userStatusCode + ", emailCode=" + emailCode
+				+ ", phone1=" + phone1 + ", phone2=" + phone2 + ", phone3=" + phone3 + "]";
 	}
 }

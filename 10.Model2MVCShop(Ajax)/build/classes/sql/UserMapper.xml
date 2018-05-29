@@ -21,6 +21,8 @@
 		<result property="address2" 	column="address2" 		jdbcType="VARCHAR" />
 		<result property="userIdKakao" 	column="user_id_kakao"  jdbcType="VARCHAR" />
 		<result property="userIdNaver" 	column="user_id_naver"  jdbcType="VARCHAR" />
+		<result property="userStatusCode" 	column="user_status_code"  	jdbcType="VARCHAR" />
+		<result property="emailCode" 		column="email_code"  		jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<!-- SQL : INSERT -->
@@ -29,18 +31,21 @@
 		INTO users( user_id , user_name , password , role , ssn, 
 					cell_phone, email , reg_date, 
 					postcode, address, address2, 
-					user_id_kakao, user_id_naver) 
+					user_id_kakao, user_id_naver,
+					user_status_code, email_code) 
 		VALUES	 (	#{userId} , #{userName} , #{password} , 'user' , #{ssn:VARCHAR} , 
 							#{phone:VARCHAR} , #{email:VARCHAR} , SYSDATE ,
 							#{postcode:VARCHAR}, #{address:VARCHAR}, #{address2:VARCHAR}, 
-							#{userIdKakao:VARCHAR}, #{userIdNaver:VARCHAR})
+							#{userIdKakao:VARCHAR}, #{userIdNaver:VARCHAR},
+							#{userStatusCode:VARCHAR}, #{emailCode:VARCHAR})
 	 </insert>
 	 
 	 <!-- SQL : SELECT ONE -->
 	 <select 	id="getUser"	parameterType="string"	resultMap="userSelectMap">
 		SELECT
 		user_id , user_name , password , role ,  cell_phone ,  email , 
-		reg_date , postcode, address, address2, user_id_kakao, user_id_naver
+		reg_date , postcode, address, address2, user_id_kakao, user_id_naver,
+		user_status_code, email_code
 		FROM users 
 		WHERE user_id = #{value}
 	 </select>
@@ -110,7 +115,8 @@
 	 <select id="checkUser" parameterType="map"	resultMap="userSelectMap">
 		SELECT
 		user_id , user_name , password , role ,  cell_phone ,  email , reg_date , 
-		postcode, address, address2, user_id_kakao, user_id_naver
+		postcode, address, address2, user_id_kakao, user_id_naver,
+		user_status_code, email_code
 		FROM users 
 		<where>
 			<if test="type == 'ka'">
@@ -133,6 +139,17 @@
 			</if>
 	   	</set>
 	   	WHERE user_id = #{userId}
+	 </update>
+	 
+	 <update id="updateStatusCode" parameterType="user">
+	 	UPDATE users
+	 	<set>
+	 		user_status_code = #{userStatusCode}
+	 	</set>
+	 	WHERE user_id = #{userId}
+		<if test="emailCode != null">
+	 	  AND email_code = #{emailCode}
+	 	</if>
 	 </update>
 	 
 </mapper>

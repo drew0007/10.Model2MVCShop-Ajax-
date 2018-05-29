@@ -49,6 +49,10 @@
 			<result property="postcode" 	column="postcode" 		jdbcType="VARCHAR" />
 			<result property="address" 		column="address" 		jdbcType="VARCHAR" />
 			<result property="address2" 	column="address2" 		jdbcType="VARCHAR" />
+			<result property="userIdKakao" 	column="user_id_kakao"  jdbcType="VARCHAR" />
+			<result property="userIdNaver" 	column="user_id_naver"  jdbcType="VARCHAR" />
+			<result property="userStatusCode" 	column="user_status_code"  	jdbcType="VARCHAR" />
+			<result property="emailCode" 		column="email_code"  		jdbcType="VARCHAR" />
 		</association>
 	</resultMap>
 	

@@ -71,4 +71,8 @@ public class UserServiceImpl implements UserService{
 	public void updateUserId(String userId, String userId2, String type) throws Exception{
 		userDao.updateUserId(userId, userId2, type);
 	}
+	
+	public void updateStatusCode(User user) throws Exception{
+		userDao.updateStatusCode(user);
+	}
 }
